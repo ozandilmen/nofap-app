@@ -553,6 +553,7 @@ body::before {
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 10px;
+  position: relative;
 }
 
 .progress-fill {
@@ -560,6 +561,55 @@ body::before {
   background: linear-gradient(90deg, #00f260, #0575e6);
   border-radius: 4px;
   transition: width 0.8s ease;
+  position: relative;
+}
+
+.progress-fill.progress-complete {
+  background: linear-gradient(90deg, #f093fb, #f5576c, #f093fb);
+  animation: progressShimmer 2s ease-in-out infinite;
+}
+
+.progress-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  border-radius: 6px;
+  opacity: 0;
+  animation: glowSweep 2s ease-in-out infinite;
+}
+
+.progress-glow.glow-active {
+  opacity: 1;
+}
+
+.next-achievement-card.ready-to-claim {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 0 30px rgba(240, 147, 251, 0.5);
+  animation: readyPulse 2s ease-in-out infinite;
+}
+
+.next-icon.ready-glow {
+  animation: iconGlow 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.8));
+}
+
+.text-ready {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.ready-indicator {
+  text-align: center;
+  background: rgba(255,255,255,0.2);
+  padding: 8px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  animation: readyBlink 1s ease-in-out infinite alternate;
 }
 
 .progress-text {
@@ -818,6 +868,48 @@ body::before {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes cupGlow {
+  0% { 
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(102, 126, 234, 0.3) 100%);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 193, 7, 0.4) 100%);
+  }
+  100% { 
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(102, 126, 234, 0.3) 100%);
+  }
+}
+
+@keyframes progressShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glowSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+@keyframes readyPulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px rgba(240, 147, 251, 0.3); }
+  50% { transform: scale(1.02); box-shadow: 0 0 40px rgba(240, 147, 251, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 20px rgba(240, 147, 251, 0.3); }
+}
+
+@keyframes iconGlow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes readyBlink {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 
 /* Articles Section */

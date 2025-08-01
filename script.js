@@ -21,25 +21,6 @@ function getUserProfile() {
   return JSON.parse(localStorage.getItem('userProfile'));
 }
 
-// Tab switching function
-function switchTab(tabName) {
-  // Tüm tab'ları gizle
-  document.querySelectorAll('.tab-pane').forEach(pane => {
-    pane.classList.remove('active');
-  });
-  
-  // Tüm nav item'ları pasif yap
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-  });
-  
-  // Seçilen tab'ı göster
-  document.getElementById(tabName + 'Tab').classList.add('active');
-  
-  // Seçilen nav item'ı aktif yap
-  event.target.closest('.nav-item').classList.add('active');
-}
-
 // Kupalar sistemini kontrol et
 function checkAchievements(dayCount) {
   const achievements = getAchievements();
@@ -68,10 +49,54 @@ function checkAchievements(dayCount) {
   if (newAchievements.length > 0) {
     localStorage.setItem('achievements', JSON.stringify(achievements));
     showAchievementNotification(newAchievements);
+    
+    // Ana sayfada kupa parıltı efekti göster
+    showCupGlowEffect();
   }
 
   return newAchievements;
 }
+
+// Kupalar listesini al
+function getAchievements() {
+  return JSON.parse(localStorage.getItem('achievements')) || [];
+}
+
+// Ana sayfada kupa parıltı efekti
+function showCupGlowEffect() {
+  // Bottom nav'daki kupalar ikonunu parlatır
+  const cupsNavItem = document.querySelector('.nav-item:nth-child(2)');
+  if (cupsNavItem) {
+    cupsNavItem.style.animation = 'cupGlow 2s ease-in-out 3';
+    cupsNavItem.style.transform = 'scale(1.1)';
+    
+    setTimeout(() => {
+      cupsNavItem.style.animation = '';
+      cupsNavItem.style.transform = '';
+    }, 6000);
+  }
+}
+
+// Tab switching function
+function switchTab(tabName) {
+  // Tüm tab'ları gizle
+  document.querySelectorAll('.tab-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+  
+  // Tüm nav item'ları pasif yap
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Seçilen tab'ı göster
+  document.getElementById(tabName + 'Tab').classList.add('active');
+  
+  // Seçilen nav item'ı aktif yap
+  event.target.closest('.nav-item').classList.add('active');
+}
+
+
 
 // Kupalar listesini al
 function getAchievements() {
@@ -437,22 +462,25 @@ function getNextAchievementHTML(currentDays, milestones, achievements) {
   }
 
   const daysLeft = nextMilestone.days - currentDays;
-  const progress = currentDays / nextMilestone.days * 100;
+  const progress = Math.min((currentDays / nextMilestone.days * 100), 100);
+  const isReady = progress >= 100;
 
   return `
-    <div class="next-achievement-card">
+    <div class="next-achievement-card ${isReady ? 'ready-to-claim' : ''}">
       <h4>🎯 Sıradaki Hedef</h4>
       <div class="next-achievement-info">
-        <span class="next-icon">${nextMilestone.icon}</span>
+        <span class="next-icon ${isReady ? 'ready-glow' : ''}">${nextMilestone.icon}</span>
         <div>
           <strong>${nextMilestone.name}</strong>
-          <p>${daysLeft} gün kaldı!</p>
+          <p>${isReady ? '🎉 Hazır!' : `${daysLeft} gün kaldı!`}</p>
         </div>
       </div>
       <div class="achievement-progress-bar">
-        <div class="progress-fill" style="width: ${progress}%"></div>
+        <div class="progress-fill ${isReady ? 'progress-complete' : ''}" style="width: ${progress}%"></div>
+        <div class="progress-glow ${isReady ? 'glow-active' : ''}"></div>
       </div>
-      <p class="progress-text">${currentDays}/${nextMilestone.days} gün tamamlandı</p>
+      <p class="progress-text ${isReady ? 'text-ready' : ''}">${currentDays}/${nextMilestone.days} gün tamamlandı</p>
+      ${isReady ? '<div class="ready-indicator">✨ Kupalar sekmesine git! ✨</div>' : ''}
     </div>
   `;
 }
