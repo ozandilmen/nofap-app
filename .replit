@@ -1,5 +1,5 @@
 entrypoint = "index.html"
-modules = ["web"]
+modules = ["web", "nodejs-24"]
 
 [nix]
 channel = "stable-24_11"
@@ -55,3 +55,7 @@ args = "static-web-server -w ./.config/static-web-server.toml"
 [[ports]]
 localPort = 80
 externalPort = 80
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
