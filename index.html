@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,13 +17,48 @@
   </div>
 
   <!-- Ana Uygulama -->
-  <div id="mainContainer" class="container" style="display: none;">
-    <h1>🌱 Günlük Sürdürme: Ağaç Yetiştir</h1>
-    <button onclick="handleWatering()">💧 Su Ver</button>
-    <button onclick="handlePanic()" class="panic-btn">🚨 Panik Butonu</button>
-    <div id="output"></div>
-    <div id="motivationOutput" class="motivation-message"></div>
-    <div id="treeStage" class="emoji">🌱</div>
+  <div id="mainContainer" style="display: none;">
+    <!-- Ana Header ve Ağaç Bölümü -->
+    <div class="container main-section">
+      <h1>🌱 Günlük Sürdürme: Ağaç Yetiştir</h1>
+      <button onclick="handleWatering()">💧 Su Ver</button>
+      <button onclick="handlePanic()" class="panic-btn">🚨 Panik Butonu</button>
+      <div id="output"></div>
+      <div id="motivationOutput" class="motivation-message"></div>
+      <div id="treeStage" class="emoji">🌱</div>
+    </div>
+
+    <!-- Ana İçerik Alanı -->
+    <div class="main-content">
+      <!-- Sol Kolon -->
+      <div class="left-column">
+        <!-- Makaleler Bölümü -->
+        <div class="section-card">
+          <div id="articlesSection"></div>
+        </div>
+        
+        <!-- Başarı Hikayeleri Bölümü -->
+        <div class="section-card">
+          <div id="successStoriesSection"></div>
+        </div>
+      </div>
+
+      <!-- Orta Kolon -->
+      <div class="center-column">
+        <!-- Kupalar Bölümü -->
+        <div class="section-card">
+          <div id="achievementsSection"></div>
+        </div>
+      </div>
+
+      <!-- Sağ Kolon -->
+      <div class="right-column">
+        <!-- Profil Bölümü -->
+        <div class="section-card">
+          <div id="profileSection"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

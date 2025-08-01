@@ -25,6 +25,62 @@ function getUserProfile() {
   return JSON.parse(localStorage.getItem('userProfile'));
 }
 
+// Kupalar sistemini kontrol et
+function checkAchievements(dayCount) {
+  const achievements = getAchievements();
+  const newAchievements = [];
+  
+  const milestones = [
+    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!' },
+    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!' },
+    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!' },
+    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yendin!' },
+    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin!' },
+    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol!' }
+  ];
+  
+  milestones.forEach(milestone => {
+    if (dayCount >= milestone.days && !achievements.some(a => a.days === milestone.days)) {
+      newAchievements.push(milestone);
+      achievements.push(milestone);
+    }
+  });
+  
+  if (newAchievements.length > 0) {
+    localStorage.setItem('achievements', JSON.stringify(achievements));
+    showAchievementNotification(newAchievements);
+  }
+  
+  return newAchievements;
+}
+
+// Kupalar listesini al
+function getAchievements() {
+  return JSON.parse(localStorage.getItem('achievements')) || [];
+}
+
+// Kupa bildirimini göster
+function showAchievementNotification(achievements) {
+  achievements.forEach(achievement => {
+    const notification = document.createElement('div');
+    notification.className = 'achievement-notification';
+    notification.innerHTML = `
+      <div class="achievement-content">
+        <span class="achievement-icon">${achievement.icon}</span>
+        <div>
+          <strong>${achievement.name}</strong>
+          <p>${achievement.description}</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 4000);
+  });
+}
+
 // Sorular ve seçenekler
 const questions = [
   {
@@ -79,12 +135,33 @@ let userAnswers = {};
 // Sayfa yüklendiğinde kontrol et
 window.addEventListener('DOMContentLoaded', function() {
   const userProfile = getUserProfile();
-  if (userProfile) {
-    showMainApp();
-  } else {
+  
+  // Eğer profil yoksa onboarding göster, varsa ana uygulamayı göster
+  if (!userProfile) {
     showOnboarding();
+  } else {
+    showMainApp();
+    initializeMainApp();
   }
 });
+
+// Ana uygulamayı başlat
+function initializeMainApp() {
+  updateMainDisplay();
+  renderAchievements();
+  renderProfile();
+  renderArticles();
+  renderSuccessStories();
+}
+
+// Ana ekranı güncelle
+function updateMainDisplay() {
+  const data = getStoredData();
+  if (data) {
+    document.getElementById("output").innerText = `${data.dayCount}. gün - Harikasın!`;
+    document.getElementById("treeStage").innerText = getTreeStage(data.dayCount);
+  }
+}
 
 // Onboarding başlat
 function showOnboarding() {
@@ -228,9 +305,190 @@ function completeOnboarding() {
       <h2>🎉 Harika!</h2>
       <p>Artık sana özel motivasyon mesajları hazırlayabilirim.</p>
       <p>Hadi ağacını yetiştirmeye başla!</p>
-      <button onclick="showMainApp()" class="start-btn">🌱 Başla</button>
+      <button onclick="showMainApp(); initializeMainApp();" class="start-btn">🌱 Başla</button>
     </div>
   `;
+}
+
+// Kupalar bölümünü render et
+function renderAchievements() {
+  const achievements = getAchievements();
+  const container = document.getElementById('achievementsSection');
+  
+  let html = '<h3>🏆 Kupalarım</h3><div class="achievements-grid">';
+  
+  const allMilestones = [
+    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamla' },
+    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başar' },
+    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi göster' },
+    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yen' },
+    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin' },
+    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol' }
+  ];
+  
+  allMilestones.forEach(milestone => {
+    const isEarned = achievements.some(a => a.days === milestone.days);
+    html += `
+      <div class="achievement-card ${isEarned ? 'earned' : 'locked'}">
+        <div class="achievement-icon">${isEarned ? milestone.icon : '🔒'}</div>
+        <div class="achievement-name">${milestone.name}</div>
+        <div class="achievement-desc">${milestone.description}</div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// Profil bölümünü render et
+function renderProfile() {
+  const profile = getUserProfile();
+  const data = getStoredData();
+  const achievements = getAchievements();
+  
+  if (!profile) return;
+  
+  const container = document.getElementById('profileSection');
+  
+  let html = `
+    <h3>👤 Profilim</h3>
+    <div class="profile-card">
+      <div class="profile-stat">
+        <strong>Mevcut Seri:</strong> ${data ? data.dayCount : 0} gün
+      </div>
+      <div class="profile-stat">
+        <strong>Kazanılan Kupalar:</strong> ${achievements.length}
+      </div>
+      <div class="profile-stat">
+        <strong>Ana Hedef:</strong> ${profile.mainReason}
+      </div>
+      <div class="profile-weaknesses">
+        <strong>Çalıştığım Alanlar:</strong>
+        <ul>
+  `;
+  
+  if (profile.weaknesses && profile.weaknesses.length > 0) {
+    const weaknessNames = {
+      confidence: 'Özgüven',
+      energy: 'Enerji',
+      focus: 'Odaklanma',
+      social: 'Sosyal İlişkiler',
+      motivation: 'Motivasyon',
+      guilt: 'Suçluluk Hissi'
+    };
+    
+    profile.weaknesses.forEach(weakness => {
+      html += `<li>${weaknessNames[weakness] || weakness}</li>`;
+    });
+  }
+  
+  html += `
+        </ul>
+      </div>
+      <button onclick="resetProfile()" class="reset-btn">Profili Sıfırla</button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
+
+// Makaleler bölümünü render et
+function renderArticles() {
+  const container = document.getElementById('articlesSection');
+  
+  const articles = [
+    {
+      title: "NoFap'in Bilimsel Faydaları",
+      summary: "Araştırmalara göre mastürbasyonu bırakmanın beyin ve vücut üzerindeki olumlu etkileri",
+      emoji: "🧠"
+    },
+    {
+      title: "İlk 30 Günü Nasıl Atlatırsın?",
+      summary: "En zor dönem olan ilk ayı başarıyla tamamlama stratejileri",
+      emoji: "🎯"
+    },
+    {
+      title: "Dopamin Detoksu Rehberi",
+      summary: "Dopamin seviyelerini normalize etmek için pratik adımlar",
+      emoji: "⚡"
+    },
+    {
+      title: "Spor ve NoFap İlişkisi",
+      summary: "Fiziksel aktivitenin bu süreçteki önemi ve egzersiz önerileri",
+      emoji: "💪"
+    }
+  ];
+  
+  let html = '<h3>📚 Faydalı Makaleler</h3><div class="articles-grid">';
+  
+  articles.forEach(article => {
+    html += `
+      <div class="article-card">
+        <div class="article-emoji">${article.emoji}</div>
+        <h4>${article.title}</h4>
+        <p>${article.summary}</p>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// Başarı hikayeleri bölümünü render et
+function renderSuccessStories() {
+  const container = document.getElementById('successStoriesSection');
+  
+  const stories = [
+    {
+      name: "Mehmet, 25",
+      duration: "90 gün",
+      story: "İlk 2 hafta çok zordu ama sonrasında özgüvenim arttı. Artık insanlarla daha rahat konuşuyorum.",
+      emoji: "💪"
+    },
+    {
+      name: "Ali, 22",
+      duration: "180 gün",
+      story: "6 aylık süreçte enerji seviyem inanılmaz arttı. Spor yapma isteğim de geldi, hayatım değişti."
+    ,
+      emoji: "⚡"
+    },
+    {
+      name: "Can, 28",
+      duration: "365 gün",
+      story: "1 yıl sonra bambaşka bir insanım. Odaklanma becerilerim gelişti, kariyerimde ilerleme kaydettim.",
+      emoji: "🎯"
+    }
+  ];
+  
+  let html = '<h3>🌟 Başarı Hikayeleri</h3><div class="stories-grid">';
+  
+  stories.forEach(story => {
+    html += `
+      <div class="story-card">
+        <div class="story-emoji">${story.emoji}</div>
+        <div class="story-header">
+          <strong>${story.name}</strong>
+          <span class="story-duration">${story.duration}</span>
+        </div>
+        <p>"${story.story}"</p>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// Profili sıfırla
+function resetProfile() {
+  if (confirm('Profili sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+    localStorage.removeItem('userProfile');
+    localStorage.removeItem('growthData');
+    localStorage.removeItem('achievements');
+    showOnboarding();
+  }
 }
 
 // Ağaç kuruduğunda sıfırla
@@ -265,6 +523,8 @@ function handleWatering() {
     document.getElementById("output").innerText = "Tohum toprağa dikildi! 1. gün 🌱";
     tree.innerText = getTreeStage(1);
     addAnimation("animateSeed");
+    checkAchievements(1);
+    renderAchievements();
     return;
   }
 
@@ -281,6 +541,9 @@ function handleWatering() {
     document.getElementById("output").innerText = `${data.dayCount}. gün - Sulama başarılı!`;
     tree.innerText = getTreeStage(data.dayCount);
     addAnimation("animateWater");
+    checkAchievements(data.dayCount);
+    renderAchievements();
+    renderProfile();
 
   } else if (diffDays === 0) {
     // Aynı gün ikinci kez basma
@@ -297,6 +560,8 @@ function handleWatering() {
       });
       tree.innerText = getTreeStage(1);
       addAnimation("animateSeed");
+      renderAchievements();
+      renderProfile();
     }, 1000);
   }
 }
