@@ -1,27 +1,43 @@
-// Bugünün tarihini YYYY-MM-DD formatında al
+
+// Utility fonksiyonlarını en başta tanımla
 function getTodayDate() {
   const now = new Date();
   return now.toISOString().split("T")[0];
 }
 
-// Kayıtlı veriyi çek
 function getStoredData() {
   return JSON.parse(localStorage.getItem("growthData"));
 }
 
-// Veriyi kaydet
 function storeData(data) {
   localStorage.setItem("growthData", JSON.stringify(data));
 }
 
-// Kullanıcı profilini kaydet
 function saveUserProfile(profile) {
   localStorage.setItem('userProfile', JSON.stringify(profile));
 }
 
-// Kullanıcı profilini çek
 function getUserProfile() {
   return JSON.parse(localStorage.getItem('userProfile'));
+}
+
+// Tab switching function
+function switchTab(tabName) {
+  // Tüm tab'ları gizle
+  document.querySelectorAll('.tab-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+  
+  // Tüm nav item'ları pasif yap
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Seçilen tab'ı göster
+  document.getElementById(tabName + 'Tab').classList.add('active');
+  
+  // Seçilen nav item'ı aktif yap
+  event.target.closest('.nav-item').classList.add('active');
 }
 
 // Kupalar sistemini kontrol et
@@ -30,12 +46,16 @@ function checkAchievements(dayCount) {
   const newAchievements = [];
 
   const milestones = [
-    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!' },
-    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!' },
-    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!' },
-    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yendin!' },
-    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin!' },
-    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol!' }
+    { days: 1, name: 'İlk Adım', icon: '🌱', description: 'Yolculuğa başladın!', rarity: 'common' },
+    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!', rarity: 'common' },
+    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!', rarity: 'uncommon' },
+    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!', rarity: 'rare' },
+    { days: 21, name: 'Alışkanlık Kırıcı', icon: '⚡', description: '21 günde alışkanlığı kırdın!', rarity: 'rare' },
+    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yendin!', rarity: 'epic' },
+    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin!', rarity: 'epic' },
+    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol!', rarity: 'legendary' },
+    { days: 180, name: '6 Aylık Titan', icon: '💎', description: '6 aylık efsanevi güç!', rarity: 'legendary' },
+    { days: 365, name: '1 Yıllık Immortal', icon: '🔥', description: 'Tam 1 yıl! Sen bir efsanesin!', rarity: 'mythic' }
   ];
 
   milestones.forEach(milestone => {
@@ -58,78 +78,46 @@ function getAchievements() {
   return JSON.parse(localStorage.getItem('achievements')) || [];
 }
 
-// Kupa bildirimini göster
+// Kupa bildirimini göster (enhanced)
 function showAchievementNotification(achievements) {
-  achievements.forEach(achievement => {
-    const notification = document.createElement('div');
-    notification.className = 'achievement-notification';
-    notification.innerHTML = `
-      <div class="achievement-content">
-        <span class="achievement-icon">${achievement.icon}</span>
-        <div>
-          <strong>${achievement.name}</strong>
-          <p>${achievement.description}</p>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(notification);
-
+  achievements.forEach((achievement, index) => {
     setTimeout(() => {
-      notification.remove();
-    }, 4000);
+      const notification = document.createElement('div');
+      notification.className = `achievement-notification ${achievement.rarity}`;
+      notification.innerHTML = `
+        <div class="achievement-content">
+          <span class="achievement-icon pulse">${achievement.icon}</span>
+          <div>
+            <strong>🎉 KUPA KAZANDIN!</strong>
+            <p><strong>${achievement.name}</strong></p>
+            <p>${achievement.description}</p>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(notification);
+
+      // Konfeti efekti
+      createConfetti();
+
+      setTimeout(() => {
+        notification.remove();
+      }, 5000);
+    }, index * 1000);
   });
 }
 
-// Bugünün tarihini YYYY-MM-DD formatında al
-function getTodayDate() {
-  const now = new Date();
-  return now.toISOString().split("T")[0];
-}
-
-// Kayıtlı veriyi çek
-function getStoredData() {
-  return JSON.parse(localStorage.getItem("growthData"));
-}
-
-// Veriyi kaydet
-function storeData(data) {
-  localStorage.setItem("growthData", JSON.stringify(data));
-}
-
-// Kullanıcı profilini kaydet
-function saveUserProfile(profile) {
-  localStorage.setItem('userProfile', JSON.stringify(profile));
-}
-
-// Kullanıcı profilini çek
-function getUserProfile() {
-  return JSON.parse(localStorage.getItem('userProfile'));
-}
-
-// Bugünün tarihini YYYY-MM-DD formatında al
-function getTodayDate() {
-  const now = new Date();
-  return now.toISOString().split("T")[0];
-}
-
-// Kayıtlı veriyi çek
-function getStoredData() {
-  return JSON.parse(localStorage.getItem("growthData"));
-}
-
-// Veriyi kaydet
-function storeData(data) {
-  localStorage.setItem("growthData", JSON.stringify(data));
-}
-
-// Kullanıcı profilini kaydet
-function saveUserProfile(profile) {
-  localStorage.setItem('userProfile', JSON.stringify(profile));
-}
-
-// Kullanıcı profilini çek
-function getUserProfile() {
-  return JSON.parse(localStorage.getItem('userProfile'));
+// Konfeti efekti
+function createConfetti() {
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'][Math.floor(Math.random() * 5)];
+    confetti.style.animationDelay = Math.random() * 3 + 's';
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => confetti.remove(), 3000);
+  }
 }
 
 // Sorular ve seçenekler
@@ -183,8 +171,8 @@ const questions = [
 let currentQuestionIndex = 0;
 let userAnswers = {};
 
-// Sayfa yüklendiğinde kontrol et
-window.addEventListener('DOMContentLoaded', function() {
+// Kullanıcı uygulamayı ilk kez açıyor mu kontrol et
+document.addEventListener('DOMContentLoaded', function() {
   const userProfile = getUserProfile();
 
   // Eğer profil yoksa onboarding göster, varsa ana uygulamayı göster
@@ -361,35 +349,127 @@ function completeOnboarding() {
   `;
 }
 
-// Kupalar bölümünü render et
+// Enhanced kupalar bölümünü render et
 function renderAchievements() {
   const achievements = getAchievements();
+  const data = getStoredData();
+  const currentDays = data ? data.dayCount : 0;
   const container = document.getElementById('achievementsSection');
 
-  let html = '<h3>🏆 Kupalarım</h3><div class="achievements-grid">';
+  const rarityColors = {
+    common: '#95a5a6',
+    uncommon: '#27ae60', 
+    rare: '#3498db',
+    epic: '#9b59b6',
+    legendary: '#f39c12',
+    mythic: '#e74c3c'
+  };
 
   const allMilestones = [
-    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamla' },
-    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başar' },
-    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi göster' },
-    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yen' },
-    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin' },
-    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol' }
+    { days: 1, name: 'İlk Adım', icon: '🌱', description: 'Yolculuğa başladın!', rarity: 'common', motivationText: 'Her büyük yolculuk tek bir adımla başlar!' },
+    { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!', rarity: 'common', motivationText: 'İlk engeli aştın, güçlüsün!' },
+    { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!', rarity: 'uncommon', motivationText: 'Bir hafta tam kontrol! İnanılmazsın!' },
+    { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!', rarity: 'rare', motivationText: 'Güçlü iraden tüm zorluklara galip geliyor!' },
+    { days: 21, name: 'Alışkanlık Kırıcı', icon: '⚡', description: '21 günde alışkanlığı kırdın!', rarity: 'rare', motivationText: 'Bilim der ki 21 gün yeni alışkanlık oluşturur!' },
+    { days: 30, name: '1 Aylık Efsane', icon: '🏆', description: 'Tam 1 ay boyunca kendini yendin!', rarity: 'epic', motivationText: 'Efsanevi güç! Sen artık farklı birisin!' },
+    { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin!', rarity: 'epic', motivationText: 'Usta seviyesindesin! Kimse seni durduramaz!' },
+    { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol!', rarity: 'legendary', motivationText: 'Şampiyon! Artık hiçbir şey eskisi gibi değil!' },
+    { days: 180, name: '6 Aylık Titan', icon: '💎', description: '6 aylık efsanevi güç!', rarity: 'legendary', motivationText: 'Titan gücü! Sen artık başka bir seviyedesin!' },
+    { days: 365, name: '1 Yıllık Immortal', icon: '🔥', description: 'Tam 1 yıl! Sen bir efsanesin!', rarity: 'mythic', motivationText: 'İMMORTAL! Sen artık efsane statüsündesin!' }
   ];
+
+  // İstatistikler bölümü
+  let html = `
+    <div class="achievement-stats">
+      <div class="stat-card">
+        <div class="stat-number">${achievements.length}</div>
+        <div class="stat-label">Kazanılan Kupa</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">${currentDays}</div>
+        <div class="stat-label">Mevcut Seri</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">${Math.round((achievements.length / allMilestones.length) * 100)}%</div>
+        <div class="stat-label">Tamamlama</div>
+      </div>
+    </div>
+
+    <div class="next-achievement">
+      ${getNextAchievementHTML(currentDays, allMilestones, achievements)}
+    </div>
+
+    <h3>🏆 Kupa Koleksiyonum</h3>
+    <div class="achievements-grid">
+  `;
 
   allMilestones.forEach(milestone => {
     const isEarned = achievements.some(a => a.days === milestone.days);
+    const daysUntil = milestone.days - currentDays;
+    
     html += `
-      <div class="achievement-card ${isEarned ? 'earned' : 'locked'}">
-        <div class="achievement-icon">${isEarned ? milestone.icon : '🔒'}</div>
+      <div class="achievement-card ${isEarned ? 'earned' : 'locked'} ${milestone.rarity}" 
+           onclick="showAchievementDetail('${milestone.name}', '${milestone.description}', '${milestone.motivationText}', ${isEarned})">
+        <div class="achievement-rarity ${milestone.rarity}">${milestone.rarity.toUpperCase()}</div>
+        <div class="achievement-icon ${isEarned ? 'bounce' : ''}">${isEarned ? milestone.icon : '🔒'}</div>
         <div class="achievement-name">${milestone.name}</div>
         <div class="achievement-desc">${milestone.description}</div>
+        ${!isEarned && daysUntil > 0 ? `<div class="days-until">${daysUntil} gün kaldı</div>` : ''}
+        <div class="achievement-border" style="border-color: ${rarityColors[milestone.rarity]}"></div>
       </div>
     `;
   });
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+// Sonraki başarı HTML'i
+function getNextAchievementHTML(currentDays, milestones, achievements) {
+  const nextMilestone = milestones.find(m => m.days > currentDays);
+  if (!nextMilestone) {
+    return `
+      <div class="next-achievement-card completed">
+        <h4>🎊 Tebrikler!</h4>
+        <p>Tüm kupaları topladın! Sen gerçek bir şampiyonsun!</p>
+      </div>
+    `;
+  }
+
+  const daysLeft = nextMilestone.days - currentDays;
+  const progress = currentDays / nextMilestone.days * 100;
+
+  return `
+    <div class="next-achievement-card">
+      <h4>🎯 Sıradaki Hedef</h4>
+      <div class="next-achievement-info">
+        <span class="next-icon">${nextMilestone.icon}</span>
+        <div>
+          <strong>${nextMilestone.name}</strong>
+          <p>${daysLeft} gün kaldı!</p>
+        </div>
+      </div>
+      <div class="achievement-progress-bar">
+        <div class="progress-fill" style="width: ${progress}%"></div>
+      </div>
+      <p class="progress-text">${currentDays}/${nextMilestone.days} gün tamamlandı</p>
+    </div>
+  `;
+}
+
+// Kupa detayını göster
+function showAchievementDetail(name, description, motivationText, isEarned) {
+  const modal = document.createElement('div');
+  modal.className = 'achievement-modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal" onclick="this.parentElement.parentElement.remove()">&times;</span>
+      <h3>${isEarned ? '🎉' : '🔒'} ${name}</h3>
+      <p>${description}</p>
+      ${isEarned ? `<div class="motivation-quote">"${motivationText}"</div>` : '<p>Bu kupayı kazanmak için devam et!</p>'}
+    </div>
+  `;
+  document.body.appendChild(modal);
 }
 
 // Profil bölümünü render et
@@ -403,23 +483,21 @@ function renderProfile() {
   const container = document.getElementById('profileSection');
 
   let html = `
-    <div class="profile-card">`;
-
-  html += `
-    <h3>👤 Profilim</h3>
     <div class="profile-card">
-      <div class="profile-stat">
-        <strong>Mevcut Seri:</strong> ${data ? data.dayCount : 0} gün
-      </div>
-      <div class="profile-stat">
-        <strong>Kazanılan Kupalar:</strong> ${achievements.length}
-      </div>
-      <div class="profile-stat">
-        <strong>Ana Hedef:</strong> ${profile.mainReason}
-      </div>
-      <div class="profile-weaknesses">
-        <strong>Çalıştığım Alanlar:</strong>
-        <ul>
+      <h3>👤 Profilim</h3>
+      <div class="profile-card">
+        <div class="profile-stat">
+          <strong>Mevcut Seri:</strong> ${data ? data.dayCount : 0} gün
+        </div>
+        <div class="profile-stat">
+          <strong>Kazanılan Kupalar:</strong> ${achievements.length}
+        </div>
+        <div class="profile-stat">
+          <strong>Ana Hedef:</strong> ${profile.mainReason}
+        </div>
+        <div class="profile-weaknesses">
+          <strong>Çalıştığım Alanlar:</strong>
+          <ul>
   `;
 
   if (profile.weaknesses && profile.weaknesses.length > 0) {
@@ -438,10 +516,10 @@ function renderProfile() {
   }
 
   html += `
-        </ul>
+          </ul>
+        </div>
+        <button onclick="resetProfile()" class="reset-btn">Profili Sıfırla</button>
       </div>
-      <button onclick="resetProfile()" class="reset-btn">Profili Sıfırla</button>
-    </div>
   `;
 
   container.innerHTML = html;
@@ -480,8 +558,10 @@ function renderArticles() {
     html += `
       <div class="article-card">
         <div class="article-emoji">${article.emoji}</div>
-        <h4>${article.title}</h4>
-        <p>${article.summary}</p>
+        <div class="article-content">
+          <h4>${article.title}</h4>
+          <p>${article.summary}</p>
+        </div>
       </div>
     `;
   });
@@ -504,8 +584,7 @@ function renderSuccessStories() {
     {
       name: "Ali, 22",
       duration: "180 gün",
-      story: "6 aylık süreçte enerji seviyem inanılmaz arttı. Spor yapma isteğim de geldi, hayatım değişti."
-    ,
+      story: "6 aylık süreçte enerji seviyem inanılmaz arttı. Spor yapma isteğim de geldi, hayatım değişti.",
       emoji: "⚡"
     },
     {
