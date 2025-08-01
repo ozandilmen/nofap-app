@@ -1,4 +1,3 @@
-
 // Bugünün tarihini YYYY-MM-DD formatında al
 function getTodayDate() {
   const now = new Date();
@@ -29,7 +28,7 @@ function getUserProfile() {
 function checkAchievements(dayCount) {
   const achievements = getAchievements();
   const newAchievements = [];
-  
+
   const milestones = [
     { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!' },
     { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!' },
@@ -38,19 +37,19 @@ function checkAchievements(dayCount) {
     { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin!' },
     { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol!' }
   ];
-  
+
   milestones.forEach(milestone => {
     if (dayCount >= milestone.days && !achievements.some(a => a.days === milestone.days)) {
       newAchievements.push(milestone);
       achievements.push(milestone);
     }
   });
-  
+
   if (newAchievements.length > 0) {
     localStorage.setItem('achievements', JSON.stringify(achievements));
     showAchievementNotification(newAchievements);
   }
-  
+
   return newAchievements;
 }
 
@@ -74,7 +73,7 @@ function showAchievementNotification(achievements) {
       </div>
     `;
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
       notification.remove();
     }, 4000);
@@ -135,7 +134,7 @@ let userAnswers = {};
 // Sayfa yüklendiğinde kontrol et
 window.addEventListener('DOMContentLoaded', function() {
   const userProfile = getUserProfile();
-  
+
   // Eğer profil yoksa onboarding göster, varsa ana uygulamayı göster
   if (!userProfile) {
     showOnboarding();
@@ -183,17 +182,17 @@ function showCurrentQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById('questionContainer');
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-  
+
   // Progress bar güncelle
   document.getElementById('progressFill').style.width = `${progress}%`;
-  
+
   let html = `
     <div class="question-screen">
       <h2>${question.title}</h2>
       ${question.subtitle ? `<p class="subtitle">${question.subtitle}</p>` : ''}
       <div class="question-content">
   `;
-  
+
   if (question.type === 'select') {
     html += '<div class="options-list">';
     question.options.forEach(option => {
@@ -204,7 +203,7 @@ function showCurrentQuestion() {
       `;
     });
     html += '</div>';
-    
+
   } else if (question.type === 'checkbox') {
     html += '<div class="checkbox-options">';
     question.options.forEach(option => {
@@ -217,14 +216,14 @@ function showCurrentQuestion() {
     });
     html += '</div>';
     html += '<button class="continue-btn" onclick="continueFromCheckbox()" disabled>Devam Et</button>';
-    
+
   } else if (question.type === 'textarea') {
     html += `
       <textarea id="textareaAnswer" placeholder="${question.placeholder}" rows="4"></textarea>
       <button class="continue-btn" onclick="continueFromTextarea()">Devam Et</button>
     `;
   }
-  
+
   html += '</div></div>';
   container.innerHTML = html;
 }
@@ -233,13 +232,13 @@ function showCurrentQuestion() {
 function selectOption(value) {
   const question = questions[currentQuestionIndex];
   userAnswers[question.id] = value;
-  
+
   // Seçilen seçeneği vurgula
   document.querySelectorAll('.option-btn').forEach(btn => {
     btn.classList.remove('selected');
   });
   event.target.classList.add('selected');
-  
+
   // Kısa bir süre bekle ve devam et
   setTimeout(() => {
     nextQuestion();
@@ -251,9 +250,9 @@ function updateCheckboxAnswers() {
   const question = questions[currentQuestionIndex];
   const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
   const values = Array.from(checkedBoxes).map(cb => cb.value);
-  
+
   userAnswers[question.id] = values;
-  
+
   // En az bir seçenek seçildiyse devam butonunu aktif et
   const continueBtn = document.querySelector('.continue-btn');
   continueBtn.disabled = values.length === 0;
@@ -279,7 +278,7 @@ function continueFromTextarea() {
 // Bir sonraki soruya geç
 function nextQuestion() {
   currentQuestionIndex++;
-  
+
   if (currentQuestionIndex >= questions.length) {
     // Tüm sorular tamamlandı
     completeOnboarding();
@@ -295,9 +294,9 @@ function completeOnboarding() {
     ...userAnswers,
     createdAt: new Date().toISOString()
   };
-  
+
   saveUserProfile(profile);
-  
+
   // Tebrik ekranı göster
   const container = document.getElementById('questionContainer');
   container.innerHTML = `
@@ -314,9 +313,9 @@ function completeOnboarding() {
 function renderAchievements() {
   const achievements = getAchievements();
   const container = document.getElementById('achievementsSection');
-  
+
   let html = '<h3>🏆 Kupalarım</h3><div class="achievements-grid">';
-  
+
   const allMilestones = [
     { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamla' },
     { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başar' },
@@ -325,7 +324,7 @@ function renderAchievements() {
     { days: 60, name: '2 Aylık Usta', icon: '👑', description: '2 aylık inanılmaz disiplin' },
     { days: 90, name: '3 Aylık Şampiyon', icon: '⭐', description: '3 aylık mükemmel kontrol' }
   ];
-  
+
   allMilestones.forEach(milestone => {
     const isEarned = achievements.some(a => a.days === milestone.days);
     html += `
@@ -336,7 +335,7 @@ function renderAchievements() {
       </div>
     `;
   });
-  
+
   html += '</div>';
   container.innerHTML = html;
 }
@@ -346,12 +345,15 @@ function renderProfile() {
   const profile = getUserProfile();
   const data = getStoredData();
   const achievements = getAchievements();
-  
+
   if (!profile) return;
-  
+
   const container = document.getElementById('profileSection');
-  
+
   let html = `
+    <div class="profile-card">`;
+
+  html += `
     <h3>👤 Profilim</h3>
     <div class="profile-card">
       <div class="profile-stat">
@@ -367,7 +369,7 @@ function renderProfile() {
         <strong>Çalıştığım Alanlar:</strong>
         <ul>
   `;
-  
+
   if (profile.weaknesses && profile.weaknesses.length > 0) {
     const weaknessNames = {
       confidence: 'Özgüven',
@@ -377,26 +379,26 @@ function renderProfile() {
       motivation: 'Motivasyon',
       guilt: 'Suçluluk Hissi'
     };
-    
+
     profile.weaknesses.forEach(weakness => {
       html += `<li>${weaknessNames[weakness] || weakness}</li>`;
     });
   }
-  
+
   html += `
         </ul>
       </div>
       <button onclick="resetProfile()" class="reset-btn">Profili Sıfırla</button>
     </div>
   `;
-  
+
   container.innerHTML = html;
 }
 
 // Makaleler bölümünü render et
 function renderArticles() {
   const container = document.getElementById('articlesSection');
-  
+
   const articles = [
     {
       title: "NoFap'in Bilimsel Faydaları",
@@ -419,9 +421,9 @@ function renderArticles() {
       emoji: "💪"
     }
   ];
-  
+
   let html = '<h3>📚 Faydalı Makaleler</h3><div class="articles-grid">';
-  
+
   articles.forEach(article => {
     html += `
       <div class="article-card">
@@ -431,7 +433,7 @@ function renderArticles() {
       </div>
     `;
   });
-  
+
   html += '</div>';
   container.innerHTML = html;
 }
@@ -439,7 +441,7 @@ function renderArticles() {
 // Başarı hikayeleri bölümünü render et
 function renderSuccessStories() {
   const container = document.getElementById('successStoriesSection');
-  
+
   const stories = [
     {
       name: "Mehmet, 25",
@@ -461,9 +463,9 @@ function renderSuccessStories() {
       emoji: "🎯"
     }
   ];
-  
+
   let html = '<h3>🌟 Başarı Hikayeleri</h3><div class="stories-grid">';
-  
+
   stories.forEach(story => {
     html += `
       <div class="story-card">
@@ -476,7 +478,7 @@ function renderSuccessStories() {
       </div>
     `;
   });
-  
+
   html += '</div>';
   container.innerHTML = html;
 }
@@ -655,13 +657,13 @@ function handlePanic() {
   const data = getStoredData();
   const dayCount = data ? data.dayCount : 0;
   const profile = getUserProfile();
-  
+
   let message = "";
-  
+
   if (profile) {
     // Kişiselleştirilmiş mesaj
     const personalMotivation = getPersonalizedMotivation(dayCount, profile);
-    
+
     message = `💪 <strong>Güçlü kal!</strong><br><br>
       ${personalMotivation.personal}<br><br>
       📊 ${personalMotivation.frequency}<br><br>
@@ -675,11 +677,11 @@ function handlePanic() {
       "🔥 Her panik anı aslında seni daha güçlü yapan bir fırsattır. Bu zorluğu da aşacaksın!",
       "⭐ Bugüne kadar geldiğin yol boşa gitmeyecek. Sen çok değerlisin, pes etme!"
     ];
-    
+
     const randomMessage = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
     message = `💪 <strong>Güçlü kal!</strong><br><br>${randomMessage}`;
   }
-  
+
   motivationDiv.style.display = "block";
   motivationDiv.innerHTML = message;
 }

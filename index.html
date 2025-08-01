@@ -18,45 +18,78 @@
 
   <!-- Ana Uygulama -->
   <div id="mainContainer" style="display: none;">
-    <!-- Ana Header ve Ağaç Bölümü -->
-    <div class="container main-section">
-      <h1>🌱 Günlük Sürdürme: Ağaç Yetiştir</h1>
-      <button onclick="handleWatering()">💧 Su Ver</button>
-      <button onclick="handlePanic()" class="panic-btn">🚨 Panik Butonu</button>
-      <div id="output"></div>
-      <div id="motivationOutput" class="motivation-message"></div>
-      <div id="treeStage" class="emoji">🌱</div>
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Ana Sayfa Tab -->
+      <div id="homeTab" class="tab-pane active">
+        <div class="tab-header">
+          <h2>🌱 Ağacım</h2>
+        </div>
+        <div class="tree-section">
+          <div id="output"></div>
+          <div id="treeStage" class="emoji">🌱</div>
+          <div class="action-buttons">
+            <button onclick="handleWatering()" class="water-btn">💧 Su Ver</button>
+            <button onclick="handlePanic()" class="panic-btn">🚨 Panik</button>
+          </div>
+          <div id="motivationOutput" class="motivation-message"></div>
+        </div>
+      </div>
+
+      <!-- Kupalar Tab -->
+      <div id="achievementsTab" class="tab-pane">
+        <div class="tab-header">
+          <h2>🏆 Kupalarım</h2>
+        </div>
+        <div id="achievementsSection"></div>
+      </div>
+
+      <!-- Makaleler Tab -->
+      <div id="articlesTab" class="tab-pane">
+        <div class="tab-header">
+          <h2>📚 Makaleler</h2>
+        </div>
+        <div id="articlesSection"></div>
+      </div>
+
+      <!-- Başarı Hikayeleri Tab -->
+      <div id="storiesTab" class="tab-pane">
+        <div class="tab-header">
+          <h2>🌟 Başarı Hikayeleri</h2>
+        </div>
+        <div id="successStoriesSection"></div>
+      </div>
+
+      <!-- Profil Tab -->
+      <div id="profileTab" class="tab-pane">
+        <div class="tab-header">
+          <h2>👤 Profilim</h2>
+        </div>
+        <div id="profileSection"></div>
+      </div>
     </div>
 
-    <!-- Ana İçerik Alanı -->
-    <div class="main-content">
-      <!-- Sol Kolon -->
-      <div class="left-column">
-        <!-- Makaleler Bölümü -->
-        <div class="section-card">
-          <div id="articlesSection"></div>
-        </div>
-        
-        <!-- Başarı Hikayeleri Bölümü -->
-        <div class="section-card">
-          <div id="successStoriesSection"></div>
-        </div>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab('home')">
+        <div class="nav-icon">🌱</div>
+        <div class="nav-label">Ana Sayfa</div>
       </div>
-
-      <!-- Orta Kolon -->
-      <div class="center-column">
-        <!-- Kupalar Bölümü -->
-        <div class="section-card">
-          <div id="achievementsSection"></div>
-        </div>
+      <div class="nav-item" onclick="switchTab('achievements')">
+        <div class="nav-icon">🏆</div>
+        <div class="nav-label">Kupalar</div>
       </div>
-
-      <!-- Sağ Kolon -->
-      <div class="right-column">
-        <!-- Profil Bölümü -->
-        <div class="section-card">
-          <div id="profileSection"></div>
-        </div>
+      <div class="nav-item" onclick="switchTab('articles')">
+        <div class="nav-icon">📚</div>
+        <div class="nav-label">Makaleler</div>
+      </div>
+      <div class="nav-item" onclick="switchTab('stories')">
+        <div class="nav-icon">🌟</div>
+        <div class="nav-label">Hikayeler</div>
+      </div>
+      <div class="nav-item" onclick="switchTab('profile')">
+        <div class="nav-icon">👤</div>
+        <div class="nav-label">Profil</div>
       </div>
     </div>
   </div>

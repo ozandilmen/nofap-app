@@ -4,41 +4,165 @@ body {
   background: #f0f8ff;
   margin: 0;
   padding: 0;
-  text-align: center;
   color: #333;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .container {
-  max-width: 400px;
-  margin: 30px auto;
+  max-width: 100%;
+  margin: 0;
   background: #ffffff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
+/* Tab Layout */
+#mainContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Bottom nav yüksekliği */
+}
+
+.tab-pane {
+  display: none;
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.tab-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.tab-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  height: 80px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px 4px;
 }
 
-button:hover {
-  background-color: #45a049;
+.nav-item.active {
+  background: #e8f5e8;
+  color: #4caf50;
+}
+
+.nav-item:not(.active):hover {
+  background: #f8f9fa;
+}
+
+.nav-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Tree Section */
+.tree-section {
+  text-align: center;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+#output {
+  margin: 20px 0;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #333;
+}
+
+#treeStage {
+  font-size: 120px;
+  margin: 30px 0;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  display: block;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 30px 0;
+  justify-content: center;
+}
+
+.water-btn, .panic-btn {
+  flex: 1;
+  max-width: 140px;
+  padding: 15px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.water-btn {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+}
+
+.water-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .panic-btn {
-  background-color: #ff4444 !important;
-  margin-left: 10px;
+  background: linear-gradient(135deg, #ff4444, #cc3333);
+  color: white;
 }
 
 .panic-btn:hover {
-  background-color: #cc3333 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
 }
 
 .motivation-message {
@@ -53,37 +177,20 @@ button:hover {
   display: none;
 }
 
-#output {
-  margin-top: 20px;
-  padding: 10px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Ağaç görseli */
-#treeStage {
-  margin-top: 30px;
-  font-size: 80px;
-  transition: transform 0.4s ease, filter 0.4s ease;
-}
-
-/* Sulama animasyonu */
+/* Animations */
 .animateWater {
   animation: shake 0.4s;
 }
 
-/* Tohum animasyonu */
 .animateSeed {
   animation: dropIntoSoil 0.7s ease;
 }
 
-/* Ağaç kuruma animasyonu */
 .animateDead {
   animation: fadeOut 0.6s ease;
   filter: grayscale(100%) brightness(0.6);
 }
 
-/* Sallanma efekti (sulama) */
 @keyframes shake {
   0% { transform: translateY(0px); }
   25% { transform: translateY(-5px); }
@@ -92,14 +199,12 @@ button:hover {
   100% { transform: translateY(0px); }
 }
 
-/* Tohum düşme animasyonu */
 @keyframes dropIntoSoil {
   0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
   50% { transform: translateY(0px) scale(1.1); opacity: 0.7; }
   100% { transform: translateY(0px) scale(1); opacity: 1; }
 }
 
-/* Soldurma animasyonu */
 @keyframes fadeOut {
   0% { opacity: 1; transform: scale(1); }
   100% { opacity: 0.3; transform: scale(0.8); }
@@ -139,7 +244,6 @@ button:hover {
   margin-bottom: 30px;
 }
 
-/* Options List */
 .options-list {
   display: flex;
   flex-direction: column;
@@ -171,7 +275,6 @@ button:hover {
   border-color: #4caf50;
 }
 
-/* Checkbox Options */
 .checkbox-options {
   display: flex;
   flex-direction: column;
@@ -204,7 +307,6 @@ button:hover {
   color: #333;
 }
 
-/* Continue Button */
 .continue-btn {
   width: 100%;
   margin-top: 30px;
@@ -227,7 +329,6 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Textarea */
 #textareaAnswer {
   width: 100%;
   padding: 15px;
@@ -245,7 +346,6 @@ button:hover {
   outline: none;
 }
 
-/* Completion Screen */
 .completion-screen {
   text-align: center;
   padding: 20px 0;
@@ -280,52 +380,19 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Main Layout */
-.main-section {
-  margin-bottom: 30px;
-}
-
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.left-column, .center-column, .right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.section-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.section-card h3 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 20px;
-  text-align: center;
-}
-
 /* Achievement Notification */
 .achievement-notification {
   position: fixed;
   top: 20px;
+  left: 20px;
   right: 20px;
   background: linear-gradient(135deg, #4caf50, #45a049);
   color: white;
   padding: 15px 20px;
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  z-index: 1000;
-  animation: slideInRight 0.5s ease;
+  z-index: 1001;
+  animation: slideInDown 0.5s ease;
 }
 
 .achievement-content {
@@ -350,13 +417,13 @@ button:hover {
   opacity: 0.9;
 }
 
-@keyframes slideInRight {
+@keyframes slideInDown {
   from {
-    transform: translateX(100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -364,63 +431,64 @@ button:hover {
 /* Achievements Section */
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  margin-top: 15px;
 }
 
 .achievement-card {
   text-align: center;
-  padding: 15px 10px;
-  border-radius: 8px;
+  padding: 20px 15px;
+  border-radius: 12px;
   transition: transform 0.3s ease;
   border: 2px solid transparent;
+  background: #f8f9fa;
 }
 
 .achievement-card.earned {
   background: linear-gradient(135deg, #fff3cd, #f8f9fa);
   border-color: #ffc107;
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .achievement-card.locked {
-  background: #f8f9fa;
   opacity: 0.6;
 }
 
-.achievement-card:hover {
-  transform: scale(1.1);
-}
-
-.achievement-icon {
-  font-size: 30px;
-  margin-bottom: 8px;
+.achievement-card .achievement-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+  display: block;
 }
 
 .achievement-name {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   color: #333;
+  line-height: 1.3;
 }
 
 .achievement-desc {
-  font-size: 10px;
+  font-size: 11px;
   color: #666;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 /* Articles Section */
 .articles-grid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 15px;
+  margin-top: 15px;
 }
 
 .article-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 15px;
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 12px;
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
@@ -433,12 +501,18 @@ button:hover {
   font-size: 30px;
   margin-right: 15px;
   flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.article-content {
+  flex: 1;
 }
 
 .article-card h4 {
-  margin: 0 0 5px 0;
+  margin: 0 0 8px 0;
   color: #333;
   font-size: 16px;
+  line-height: 1.4;
 }
 
 .article-card p {
@@ -450,20 +524,25 @@ button:hover {
 
 /* Success Stories Section */
 .stories-grid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 15px;
+  margin-top: 15px;
 }
 
 .story-card {
   padding: 15px;
   background: #f0f8ff;
-  border-radius: 8px;
+  border-radius: 12px;
   border-left: 4px solid #4caf50;
+  position: relative;
 }
 
 .story-emoji {
+  position: absolute;
+  top: 15px;
+  right: 15px;
   font-size: 20px;
-  float: right;
 }
 
 .story-header {
@@ -471,6 +550,7 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  padding-right: 30px;
 }
 
 .story-header strong {
@@ -481,26 +561,29 @@ button:hover {
 .story-duration {
   background: #4caf50;
   color: white;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 12px;
   font-size: 11px;
+  font-weight: bold;
 }
 
 .story-card p {
   margin: 0;
   color: #555;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
   font-style: italic;
+  padding-right: 30px;
 }
 
 /* Profile Section */
 .profile-card {
   text-align: left;
+  margin-top: 15px;
 }
 
 .profile-stat {
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid #eee;
   font-size: 14px;
 }
@@ -511,54 +594,80 @@ button:hover {
 
 .profile-stat strong {
   color: #333;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .profile-weaknesses {
-  margin-top: 15px;
+  margin-top: 20px;
+}
+
+.profile-weaknesses strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .profile-weaknesses ul {
-  margin: 10px 0;
+  margin: 0;
   padding-left: 20px;
 }
 
 .profile-weaknesses li {
   font-size: 13px;
   color: #666;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  line-height: 1.4;
 }
 
 .reset-btn {
   width: 100%;
-  margin-top: 15px;
-  padding: 10px;
+  margin-top: 20px;
+  padding: 12px;
   background: #dc3545;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
 }
 
 .reset-btn:hover {
   background: #c82333;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-content {
-    grid-template-columns: 1fr;
-    padding: 0 10px;
+/* iPhone ve Android optimizasyonları */
+@media (max-width: 480px) {
+  .tab-pane {
+    padding: 15px;
+  }
+  
+  .nav-label {
+    font-size: 9px;
+  }
+  
+  .nav-icon {
+    font-size: 20px;
+  }
+  
+  #treeStage {
+    font-size: 100px;
   }
   
   .achievements-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
   }
   
-  .achievement-notification {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    right: 10px;
+  .achievement-card .achievement-icon {
+    font-size: 35px;
+  }
+  
+  .achievement-name {
+    font-size: 12px;
+  }
+  
+  .achievement-desc {
+    font-size: 10px;
   }
 }
