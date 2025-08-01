@@ -7,7 +7,60 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <!-- Onboarding Formu -->
+  <div id="onboardingContainer" class="container">
+    <h1>🌱 Kötü Alışkanlığını Bırakma Yolculuğu</h1>
+    <p>Sana daha iyi yardım edebilmem için birkaç soru sormak istiyorum:</p>
+    
+    <form id="onboardingForm">
+      <div class="form-group">
+        <label>Ne sıklıkla mastürbasyon yapıyordun?</label>
+        <select name="frequency" required>
+          <option value="">Seçiniz...</option>
+          <option value="daily">Günde birkaç kez</option>
+          <option value="once-daily">Günde bir kez</option>
+          <option value="few-times-week">Haftada birkaç kez</option>
+          <option value="weekly">Haftada bir</option>
+          <option value="rarely">Nadiren</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Kaç yıldır bu alışkanlığın var?</label>
+        <select name="duration" required>
+          <option value="">Seçiniz...</option>
+          <option value="less-than-1">1 yıldan az</option>
+          <option value="1-3">1-3 yıl</option>
+          <option value="3-5">3-5 yıl</option>
+          <option value="5-10">5-10 yıl</option>
+          <option value="more-than-10">10 yıldan fazla</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Kendini hangi yönlerde eksik hissediyorsun? (Birden fazla seçebilirsin)</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="weaknesses" value="confidence"> Özgüven eksikliği</label>
+          <label><input type="checkbox" name="weaknesses" value="energy"> Enerji düşüklüğü</label>
+          <label><input type="checkbox" name="weaknesses" value="focus"> Odaklanma sorunu</label>
+          <label><input type="checkbox" name="weaknesses" value="social"> Sosyal ilişkilerde zorluk</label>
+          <label><input type="checkbox" name="weaknesses" value="motivation"> Motivasyon eksikliği</label>
+          <label><input type="checkbox" name="weaknesses" value="guilt"> Suçluluk hissi</label>
+          <label><input type="checkbox" name="weaknesses" value="other"> Diğer</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Bu alışkanlığı bırakmak istemenin en büyük nedeni nedir?</label>
+        <textarea name="mainReason" rows="3" placeholder="Kendi kelimlerinle açıkla..." required></textarea>
+      </div>
+
+      <button type="submit">🌱 Yolculuğuma Başla</button>
+    </form>
+  </div>
+
+  <!-- Ana Uygulama -->
+  <div id="mainContainer" class="container" style="display: none;">
     <h1>🌱 Günlük Sürdürme: Ağaç Yetiştir</h1>
     <button onclick="handleWatering()">💧 Su Ver</button>
     <button onclick="handlePanic()" class="panic-btn">🚨 Panik Butonu</button>
