@@ -5,6 +5,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  color: #333;
 }
 
 .container {
@@ -153,6 +154,7 @@ button:hover {
   border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 16px;
+  color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
@@ -199,6 +201,7 @@ button:hover {
 
 .checkbox-option span {
   font-size: 16px;
+  color: #333;
 }
 
 /* Continue Button */
