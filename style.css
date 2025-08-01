@@ -27,6 +27,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #45a049;
+}
+
 .panic-btn {
   background-color: #ff4444 !important;
   margin-left: 10px;
@@ -46,6 +50,13 @@ button {
   line-height: 1.6;
   text-align: left;
   display: none;
+}
+
+#output {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 /* Ağaç görseli */
@@ -80,15 +91,15 @@ button {
   100% { transform: translateY(0px); }
 }
 
-/* Tohum düşüşü */
+/* Tohum düşme animasyonu */
 @keyframes dropIntoSoil {
-  0% { transform: translateY(-100px); opacity: 0; }
-  60% { transform: translateY(10px); opacity: 1; }
-  100% { transform: translateY(0); }
+  0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
+  50% { transform: translateY(0px) scale(1.1); opacity: 0.7; }
+  100% { transform: translateY(0px) scale(1); opacity: 1; }
 }
 
-/* Ağaç kuruduğunda solma */
+/* Soldurma animasyonu */
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0.5; }
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.3; transform: scale(0.8); }
 }

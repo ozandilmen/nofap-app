@@ -68,4 +68,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server ${PORT} portunda çalışıyor`);
+  console.log(`Uygulama şu adreste: http://localhost:${PORT}`);
 });
