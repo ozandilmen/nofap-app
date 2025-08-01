@@ -21,6 +21,30 @@ function getUserProfile() {
   return JSON.parse(localStorage.getItem('userProfile'));
 }
 
+// Kupalar listesini al
+function getAchievements() {
+  return JSON.parse(localStorage.getItem('achievements')) || [];
+}
+
+// Tab switching function
+function switchTab(tabName) {
+  // Tüm tab'ları gizle
+  document.querySelectorAll('.tab-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+  
+  // Tüm nav item'ları pasif yap
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Seçilen tab'ı göster
+  document.getElementById(tabName + 'Tab').classList.add('active');
+  
+  // Seçilen nav item'ı aktif yap
+  event.target.closest('.nav-item').classList.add('active');
+}
+
 // Kupalar sistemini kontrol et
 function checkAchievements(dayCount) {
   const achievements = getAchievements();
@@ -57,11 +81,6 @@ function checkAchievements(dayCount) {
   return newAchievements;
 }
 
-// Kupalar listesini al
-function getAchievements() {
-  return JSON.parse(localStorage.getItem('achievements')) || [];
-}
-
 // Ana sayfada kupa parıltı efekti
 function showCupGlowEffect() {
   // Bottom nav'daki kupalar ikonunu parlatır
@@ -75,32 +94,6 @@ function showCupGlowEffect() {
       cupsNavItem.style.transform = '';
     }, 6000);
   }
-}
-
-// Tab switching function
-function switchTab(tabName) {
-  // Tüm tab'ları gizle
-  document.querySelectorAll('.tab-pane').forEach(pane => {
-    pane.classList.remove('active');
-  });
-  
-  // Tüm nav item'ları pasif yap
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-  });
-  
-  // Seçilen tab'ı göster
-  document.getElementById(tabName + 'Tab').classList.add('active');
-  
-  // Seçilen nav item'ı aktif yap
-  event.target.closest('.nav-item').classList.add('active');
-}
-
-
-
-// Kupalar listesini al
-function getAchievements() {
-  return JSON.parse(localStorage.getItem('achievements')) || [];
 }
 
 // Kupa bildirimini göster (enhanced)
