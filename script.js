@@ -106,6 +106,32 @@ function getUserProfile() {
   return JSON.parse(localStorage.getItem('userProfile'));
 }
 
+// Bugünün tarihini YYYY-MM-DD formatında al
+function getTodayDate() {
+  const now = new Date();
+  return now.toISOString().split("T")[0];
+}
+
+// Kayıtlı veriyi çek
+function getStoredData() {
+  return JSON.parse(localStorage.getItem("growthData"));
+}
+
+// Veriyi kaydet
+function storeData(data) {
+  localStorage.setItem("growthData", JSON.stringify(data));
+}
+
+// Kullanıcı profilini kaydet
+function saveUserProfile(profile) {
+  localStorage.setItem('userProfile', JSON.stringify(profile));
+}
+
+// Kullanıcı profilini çek
+function getUserProfile() {
+  return JSON.parse(localStorage.getItem('userProfile'));
+}
+
 // Sorular ve seçenekler
 const questions = [
   {
