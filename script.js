@@ -46,7 +46,7 @@ function checkAchievements(dayCount) {
   const newAchievements = [];
 
   const milestones = [
-    { days: 1, name: 'İlk Adım', icon: '🌱', description: 'Yolculuğa başladın!', rarity: 'common' },
+    { days: 1, name: 'Seri Başlangıcı', icon: '🌱', description: 'İlk adımı attın!', rarity: 'common' },
     { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!', rarity: 'common' },
     { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!', rarity: 'uncommon' },
     { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!', rarity: 'rare' },
@@ -366,7 +366,7 @@ function renderAchievements() {
   };
 
   const allMilestones = [
-    { days: 1, name: 'İlk Adım', icon: '🌱', description: 'Yolculuğa başladın!', rarity: 'common', motivationText: 'Her büyük yolculuk tek bir adımla başlar!' },
+    { days: 1, name: 'Seri Başlangıcı', icon: '🌱', description: 'İlk adımı attın!', rarity: 'common', motivationText: 'Her büyük yolculuk tek bir adımla başlar!' },
     { days: 3, name: '3 Günlük Başlangıç', icon: '🥉', description: 'İlk 3 günü tamamladın!', rarity: 'common', motivationText: 'İlk engeli aştın, güçlüsün!' },
     { days: 7, name: '1 Haftalık Kahraman', icon: '🥈', description: '1 haftalık seriyi başardın!', rarity: 'uncommon', motivationText: 'Bir hafta tam kontrol! İnanılmazsın!' },
     { days: 14, name: '2 Haftalık Savaşçı', icon: '🥇', description: '2 haftalık güçlü iradeyi gösterdin!', rarity: 'rare', motivationText: 'Güçlü iraden tüm zorluklara galip geliyor!' },

@@ -29,7 +29,7 @@ body {
 
 .tab-content {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding-bottom: 80px; /* Bottom nav yüksekliği */
 }
 
@@ -41,6 +41,11 @@ body {
   background: linear-gradient(135deg, rgba(30, 60, 114, 0.1) 0%, rgba(102, 126, 234, 0.1) 50%, rgba(168, 166, 214, 0.1) 100%);
   border-radius: 20px;
   margin: 10px;
+  overflow-y: hidden;
+}
+
+#achievementsTab {
+  overflow-y: auto;
 }
 
 .tab-pane.active {
