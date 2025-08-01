@@ -91,3 +91,47 @@ function getTreeStage(days) {
   if (days <= 30) return "🌸🌳";    // Çiçekli Ağaç
   return "🍎🌳";                    // Meyve Veren Ağaç
 }
+
+// Panik butonu işlevi
+async function handlePanic() {
+  const motivationDiv = document.getElementById("motivationOutput");
+  const data = getStoredData();
+  const dayCount = data ? data.dayCount : 0;
+  
+  // Loading mesajı göster
+  motivationDiv.style.display = "block";
+  motivationDiv.innerHTML = "💭 Motivasyon mesajı hazırlanıyor...";
+  
+  try {
+    const response = await fetch('/api/motivation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dayCount: dayCount,
+        treeStage: getTreeStage(dayCount)
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('API çağrısı başarısız');
+    }
+    
+    const result = await response.json();
+    motivationDiv.innerHTML = `💪 <strong>Güçlü kal!</strong><br><br>${result.message}`;
+    
+  } catch (error) {
+    // API çağrısı başarısız olursa hazır motivasyon mesajları kullan
+    const fallbackMessages = [
+      `${dayCount} gündür ne kadar güçlü olduğunu kanıtladın! Bu ağacın büyümesi senin iradenin kanıtı. Şimdi pes etme, ağacın daha da büyük meyveler verecek! 🌳`,
+      "Kötü alışkanlıklar geçicidir, ama güçlü karakterin kalıcıdır. Sen bunu yapabilirsin! 💪",
+      "Her panik anı aslında seni daha güçlü yapan bir fırsattır. Bu zorluğu da aşacaksın! 🔥",
+      "Ağacın büyümesi için sabır gerekir, sen de sabırlı ol. Başarın yakında gelecek! 🌱",
+      "Bugüne kadar geldiğin yol boşa gitmeyecek. Sen çok değerlisin, pes etme! ⭐"
+    ];
+    
+    const randomMessage = fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
+    motivationDiv.innerHTML = `💪 <strong>Güçlü kal!</strong><br><br>${randomMessage}`;
+  }
+}
