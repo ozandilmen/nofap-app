@@ -4,8 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seed Tracker 🌱</title>
+  <title>NoFap Motivasyon Uygulaması</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoFap">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik05NiA0OEM3My45MDg2IDQ4IDU2IDY1LjkwODYgNTYgODhWMTQ0QzU2IDE2Ni4wOTEgNzMuOTA4NiAxODQgOTYgMTg0QzExOC4wOTEgMTg0IDEzNiAxNjYuMDkxIDEzNiAxNDRWODhDMTM2IDY1LjkwODYgMTE4LjA5MSA0OCA5NiA0OFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik04OCA4OEgxMDRWMTQ0SDg4Vjg4WiIgZmlsbD0iIzY2N0VlYSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudDBfbGluZWFyXzFfMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMTkyIiB5Mj0iMTkyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM2NjdFZWEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNzY0YmE5Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+">
 </head>
 <body>
   <!-- Onboarding Container -->
@@ -27,12 +33,28 @@
         </div>
         <div class="tree-section">
           <div id="output"></div>
-          <div id="treeStage" class="emoji">🌱</div>
+          <div id="treeStage" class="tree-container">
+            <!-- Basit Emoji Ağaç Sistemi -->
+            <div class="emoji-tree">
+              <div class="tree-emoji">🌱</div>
+            </div>
+            <div class="water-animation" style="display: none;">💧</div>
+          </div>
+          
+          <!-- Butonlar -->
           <div class="action-buttons">
             <button onclick="handleWatering()" class="water-btn">💧 Su Ver</button>
-            <button onclick="handlePanic()" class="panic-btn">🚨 Panik</button>
+            <button onclick="handlePanic()" class="panic-btn">
+              <div class="panic-btn-content">
+                <span class="panic-icon">🚨</span>
+                <span class="panic-text">Panik</span>
+              </div>
+              <div class="panic-expanded" style="display: none;">
+                <div class="loading-spinner" style="display: none;">⏳</div>
+                <div class="panic-advice"></div>
+              </div>
+            </button>
           </div>
-          <div id="motivationOutput" class="motivation-message"></div>
         </div>
       </div>
 
@@ -52,12 +74,12 @@
         <div id="articlesSection"></div>
       </div>
 
-      <!-- Başarı Hikayeleri Tab -->
-      <div id="storiesTab" class="tab-pane">
+      <!-- Takvim Tab -->
+      <div id="calendarTab" class="tab-pane">
         <div class="tab-header">
-          <h2>🌟 Başarı Hikayeleri</h2>
+          <h2>📅 Takvim</h2>
         </div>
-        <div id="successStoriesSection"></div>
+        <div id="calendarSection"></div>
       </div>
 
       <!-- Profil Tab -->
@@ -83,9 +105,9 @@
         <div class="nav-icon">📚</div>
         <div class="nav-label">Makaleler</div>
       </div>
-      <div class="nav-item" onclick="switchTab('stories')">
-        <div class="nav-icon">🌟</div>
-        <div class="nav-label">Hikayeler</div>
+      <div class="nav-item" onclick="switchTab('calendar')">
+        <div class="nav-icon">📅</div>
+        <div class="nav-label">Takvim</div>
       </div>
       <div class="nav-item" onclick="switchTab('profile')">
         <div class="nav-icon">👤</div>
@@ -94,6 +116,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 
 {
-  "name": "quit-tracker-panic-button",
+  "name": "nofap-motivation-app",
   "version": "1.0.0",
-  "description": "Quit tracker with panic button and OpenAI motivation",
+  "description": "Kişisel gelişim ve motivasyon uygulaması",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
